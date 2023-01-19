@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "fastapi",
+        "pydantic",
         "pymysql",
         "sqlalchemy"
     ]
