@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from config.db import conn, get_db
 from models.index import users
 from schemas.index import User
+from services.index import *
 
 user = APIRouter()
 
@@ -18,14 +19,9 @@ async def read_data(id: int, db: Session = Depends(get_db)):
     return conn.execute(users.select().where(users.c.id == id).fetchall())
 
 
-@user.post("/add", response_model=users)
+@user.post("/add")
 async def write_data(user: User, db: Session = Depends(get_db)):
-    db_user = users(username=user.username,
-                    email=user.email,
-                    password=user.password,)
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
+    db_user = create_user(db)
     return db_user
 
 

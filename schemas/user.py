@@ -1,11 +1,12 @@
 from pydantic import BaseModel
+from typing import Optional
 from models.index import Role
 
 
 
 class User(BaseModel):
-    # id: int
+    # id: Optional[int] = None
     username: str
     email: str
     password: str
-    role: Role
+    role: Optional[Role] = None
