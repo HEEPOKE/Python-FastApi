@@ -1,6 +1,10 @@
 from sqlalchemy import Table, Column, Integer, String, Enum
+from sqlalchemy.ext.declarative import declarative_base
 from config.db import meta
 import enum
+
+
+Base = declarative_base()
 
 
 class Role(str, enum.Enum):
