@@ -1,5 +1,7 @@
 {
     "cSpell.words": [
-        "fastapi"
+        "fastapi",
+        "pymysql",
+        "sqlalchemy"
     ]
 }
