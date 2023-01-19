@@ -6,9 +6,10 @@ from schemas.index import User
 
 
 def create_user(user: User, db: Session = Depends(get_db)):
-    db_user = users(username=user.username,
-                    email=user.email,
-                    password=user.password,)
+    db_user = users(
+        email=user.email,
+        username=user.username,
+        password=user.password,)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
