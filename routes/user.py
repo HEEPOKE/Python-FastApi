@@ -21,7 +21,7 @@ async def write_data(user: User):
     conn.execute(users.insert().values(
         username=user.username,
         email=user.email,
-        password=user.password
+        password=user.password,
     ))
 
     return conn.execute(users.select()).fetchall()
@@ -32,7 +32,7 @@ async def update_data(id: int, user: User):
     conn.execute(user.update().values(
         username=user.username,
         email=user.email,
-        password=user.password
+        password=user.password,
     ).where(user.c.id == id))
 
     return conn.execute(users.select()).fetchall()
