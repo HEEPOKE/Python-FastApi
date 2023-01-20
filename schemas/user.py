@@ -21,7 +21,7 @@ class BaseUser(BaseModel):
 
 class ResponseUser(BaseUser):
     status: str
-    date: List[BaseUser]
+    payload: List[BaseUser]
 
 
 class RequestUser(BaseUser):
