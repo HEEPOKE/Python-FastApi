@@ -1,25 +1,25 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session
 from config.db import conn, get_db
 from models.index import users
 from schemas.user import *
 from services.index import *
 
-user = APIRouter()
+router = APIRouter()
 
 
-@user.get("/list")
+@router.get("/list")
 async def read_user_all(db: Session = Depends(get_db)):
     rows = db.query(users).order_by(users.id.desc()).all()
     return rows
 
 
-@user.get("/user/{id}")
+@router.get("/user/{id}")
 async def read_user_byId(id: int, db: Session = Depends(get_db)):
     return db.query(users).filter(users.id == id).first()
 
 
-@user.post("/add")
+@router.post("/add", status_code=status.HTTP_201_CREATED)
 async def create_user(user: RequestUser, db: Session = Depends(get_db)):
     db_user = users(
         email=user.email,
@@ -28,10 +28,10 @@ async def create_user(user: RequestUser, db: Session = Depends(get_db)):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return db_user
+    return {"status": "success", "data": db_user}
 
 
-@user.put("/update/{id")
+@router.put("/update/{id")
 async def update_user(id: int, user: RequestUser, db: Session = Depends(get_db)):
     if id is None:
         raise HTTPException(status_code=400, detail="id is required")
@@ -46,7 +46,7 @@ async def update_user(id: int, user: RequestUser, db: Session = Depends(get_db))
     return db_user
 
 
-@user.delete("/delete/{id")
+@router.delete("/delete/{id")
 async def delete_user(id: int, db: Session = Depends(get_db)):
     conn.execute(users.delete().where(users.c.id == id))
 

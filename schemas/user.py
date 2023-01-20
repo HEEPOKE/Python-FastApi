@@ -28,5 +28,5 @@ class RequestUser(BaseUser):
     username: str
     email: EmailStr
     password: str
-    role: Optional[str] = Field(None)
+    role: Optional[Role] = Field(None)
 
