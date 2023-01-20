@@ -31,13 +31,13 @@ async def create_user(user: RequestUser, db: Session = Depends(get_db)):
     return {"status": "success", "data": db_user}
 
 
-@user_router.put("/update/{id")
+@user_router.put("/update/{id}")
 async def update_user(id: int, user: RequestUser, db: Session = Depends(get_db)):
     if id is None:
         raise HTTPException(status_code=400, detail="id is required")
-    db_user = db.query(user).filter(user.id == id).first()
+    db_user = db.query(users).filter(users.id == id).first()
     if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail=f'User id {id} not found')
     db_user.username = user.username
     db_user.email = user.email
     db_user.password = user.password
@@ -48,6 +48,11 @@ async def update_user(id: int, user: RequestUser, db: Session = Depends(get_db))
 
 @user_router.delete("/delete/{id")
 async def delete_user(id: int, db: Session = Depends(get_db)):
-    conn.execute(users.delete().where(users.c.id == id))
-
-    return conn.execute(users.select()).fetchall()
+    if id is None:
+        raise HTTPException(status_code=400, detail="id is required")
+    db_user = db.query(users).filter(users.id == id).first()
+    if db_user is None:
+        raise HTTPException(status_code=404, detail=f'User id {id} not found')
+    db.delete(db_user)
+    db.commit()
+    return {"status": "success"}
