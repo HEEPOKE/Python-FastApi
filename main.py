@@ -13,4 +13,4 @@ app.add_middleware(
 )
 
 
-app.include_router(user_router, prefix='/api/user')
+app.include_router(user_router)
