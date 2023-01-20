@@ -1,6 +1,6 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
-from config.db import conn, get_db
+from config.db import get_db
 from models.index import users
 from schemas.index import *
 
