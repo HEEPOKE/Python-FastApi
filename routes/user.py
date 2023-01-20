@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from config.db import conn, get_db
 from models.index import users
-from schemas.index import User
+from schemas.user import *
 from services.index import *
 
 user = APIRouter()
@@ -15,12 +15,12 @@ async def read_user_all(db: Session = Depends(get_db)):
 
 
 @user.get("/user/{id}")
-async def read_user_byId(id: int, user: User, db: Session = Depends(get_db)):
-    return db.query(user).filter(user.id == id).first()
+async def read_user_byId(id: int, db: Session = Depends(get_db)):
+    return db.query(users).filter(users.id == id).first()
 
 
 @user.post("/add")
-async def create_user(user: User, db: Session = Depends(get_db)):
+async def create_user(user: RequestUser, db: Session = Depends(get_db)):
     db_user = users(
         email=user.email,
         username=user.username,
@@ -32,14 +32,18 @@ async def create_user(user: User, db: Session = Depends(get_db)):
 
 
 @user.put("/update/{id")
-async def update_user(id: int, user: User, db: Session = Depends(get_db)):
-    conn.execute(user.update().values(
-        username=user.username,
-        email=user.email,
-        password=user.password,
-    ).where(user.c.id == id))
-
-    return conn.execute(users.select()).fetchall()
+async def update_user(id: int, user: RequestUser, db: Session = Depends(get_db)):
+    if id is None:
+        raise HTTPException(status_code=400, detail="id is required")
+    db_user = db.query(user).filter(user.id == id).first()
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    db_user.username = user.username
+    db_user.email = user.email
+    db_user.password = user.password
+    db.commit()
+    db.refresh(db_user)
+    return db_user
 
 
 @user.delete("/delete/{id")

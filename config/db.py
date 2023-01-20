@@ -18,9 +18,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
-
-def create_session():
-    session = SessionLocal()
-    session._model_changes = {}
-    return session
