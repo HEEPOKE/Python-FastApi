@@ -7,14 +7,13 @@ from services.index import *
 
 router = APIRouter(
     prefix='/api',
-    tags='User'
+    tags=["USER"]
 )
 
 
 @router.get("/users/list")
 async def read_user_all(db: Session = Depends(get_db)):
-    rows = db.query(users).order_by(users.id.desc()).all()
-    return rows
+    return user_all(db=db)
 
 
 @router.get("/user/get/{id}")

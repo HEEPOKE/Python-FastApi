@@ -5,12 +5,6 @@ from models.index import users
 from schemas.index import *
 
 
-# def create_user(user: , db: Session = Depends(get_db)):
-#     db_user = users(
-#         email=user.email,
-#         username=user.username,
-#         password=user.password,)
-#     db.add(db_user)
-#     db.commit()
-#     db.refresh(db_user)
-#     return db_user
+def user_all(db: Session = Depends(get_db)):
+    rows = db.query(users).order_by(users.id.desc()).all()
+    return {"status": "success", "data": rows}
