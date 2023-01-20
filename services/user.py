@@ -6,7 +6,7 @@ from schemas.index import *
 
 
 def get_user_all(db: Session = Depends(get_db)):
-    rows = db.query(users).order_by(users.id.desc()).all()
+    rows = db.query(users).order_by(users.id.asc()).all()
     return {"status": "success", "payload": rows}
 
 
