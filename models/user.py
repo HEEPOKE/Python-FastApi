@@ -1,6 +1,6 @@
-from sqlalchemy import Table, Column, Integer, String, Enum, DateTime
+from sqlalchemy import Column, Integer, String, Enum, DateTime
 from datetime import datetime
-from config.db import meta, Base
+from config.db import Base
 import enum
 
 
