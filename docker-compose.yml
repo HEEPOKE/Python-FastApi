@@ -4,7 +4,7 @@ services:
     container_name: mysql-db
     image: mysql:latest
     environment:
-      MYSQL_DATABASE: fastapi
+      MYSQL_DATABASE: ${DB_NAME}
       MYSQL_ROOT_HOST: "%"
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
