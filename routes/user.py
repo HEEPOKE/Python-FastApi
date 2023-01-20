@@ -49,7 +49,7 @@ async def update_user(id: int, user: RequestUser, db: Session = Depends(get_db))
     return {"status": "success", "data": db_user}
 
 
-@user_router.delete("/delete/{id")
+@user_router.delete("/delete/{id}")
 async def delete_user(id: int, db: Session = Depends(get_db)):
     if id is None:
         raise HTTPException(status_code=400, detail="id is required")
