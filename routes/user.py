@@ -38,12 +38,15 @@ async def update_user(id: int, user: RequestUser, db: Session = Depends(get_db))
     db_user = db.query(users).filter(users.id == id).first()
     if db_user is None:
         raise HTTPException(status_code=404, detail=f'User id {id} not found')
+    if db.query(users).filter(users.email == user.email).first() and user.email != db_user.email:
+        raise HTTPException(status_code=400, detail="Email already exists")
     db_user.username = user.username
     db_user.email = user.email
     db_user.password = user.password
+    db_user.role = user.role
     db.commit()
     db.refresh(db_user)
-    return db_user
+    return {"status": "success", "data": db_user}
 
 
 @user_router.delete("/delete/{id")
