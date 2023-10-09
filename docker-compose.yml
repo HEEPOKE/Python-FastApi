@@ -1,4 +1,5 @@
-version: '3.7'
+version: '3.9'
+
 services:
   mysql-db:
     container_name: mysql-db
@@ -9,13 +10,12 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     ports:
-      - '3306:3306'
-    restart: always
+      - "${DB_PORT}:${DB_PORT}"
     env_file:
-      - ./.env
+      - .env
     networks:
-      - backend
-networks:
-  backend:
-    driver: bridge
+      - Heepoke
 
+networks:
+  Heepoke:
+    driver: bridge

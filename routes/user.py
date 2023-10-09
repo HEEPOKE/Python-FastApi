@@ -5,7 +5,7 @@ from schemas.user import *
 from services.index import *
 
 router = APIRouter(
-    prefix='/api',
+    prefix='/apis',
     tags=["USER"]
 )
 
